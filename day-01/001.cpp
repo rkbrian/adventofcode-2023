@@ -15,7 +15,7 @@ int main()
         ifstream inputFile(filename);
         if (!inputFile.is_open())
         {
-                std::cerr << "Error opening file: " << filename << std::endl;
+                cerr << "Error opening file: " << filename << endl;
                 return 1; // Return an error code
         };
         string line;
