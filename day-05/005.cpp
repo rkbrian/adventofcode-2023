@@ -3,8 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-//#include <cstdlib>
-#include <algorithm>
+#include <cstdlib>
 
 using namespace std;
 
@@ -24,7 +23,7 @@ int main()
         };
         int action_flag = -1;
         string line, string_short_name[] = {"seed", "soil", "fert", "wate", "ligh", "temp", "humi"};
-        vector<long long> num_list;
+        vector<long long> num_list, dest, src, size;
         while (getline(inputFile, line))
         {
                 if (action_flag < 0) // Record number list
@@ -44,6 +43,7 @@ int main()
                 }
                 else if (line.compare(0, 4, string_short_name[action_flag]) == 0) // Found action indicator
                 {
+                        cout << string_short_name[action_flag] << " to next:" << endl;
                         action_flag++;
                 }
                 else if (isdigit(line[0]))
@@ -51,32 +51,48 @@ int main()
                         istringstream lineStream(line);
                         string token;
                         int i = 0;
-                        long long dest = 0, src = 0, size = 0;
                         while (lineStream >> token)
                         {
                                 if (i == 0)
                                 {
-                                        dest = stoll(token);
+                                        dest.push_back(stoll(token));
                                 }
                                 else if (i == 1)
                                 {
-                                        src = stoll(token);
+                                        src.push_back(stoll(token));
                                 }
-                                else
+                                else if (i == 2)
                                 {
-                                        size = stoll(token);
+                                        size.push_back(stoll(token));
                                 }
                                 i++;
                         }
+                }
+                else if (line.compare(0, 4, "xxxx") == 0)
+                {
                         for (int j = 0; j < num_list.size(); j++)
                         {
-                                if ((num_list[j] >= src) && (num_list[j] < src + size))
-                                        num_list[j] = num_list[j] - src + dest;
+                                long long changer = 0;
+                                for (int k = 0; k < src.size(); k++)
+                                {
+                                        if ((num_list[j] >= src[k]) && (num_list[j] < src[k] + size[k]))
+                                        {
+                                                changer = changer - src[k] + dest[k];
+                                        }
+                                }
+                                num_list[j] += changer;
+                                cout << num_list[j] << ", ";
                         }
+                        cout << endl;
+                        dest.clear(), src.clear(), size.clear();
                 }
         }
-        auto loca = min_element(num_list.begin(), num_list.end());
-        int location = *loca;
-        cout << "Answer: " << location << endl;
+        long long min_value = num_list[0];
+        for (long long x : num_list)
+        {
+                if (x < min_value)
+                        min_value = x;
+        }
+        cout << endl << "Answer: " << min_value << endl;
         inputFile.close();
 }
