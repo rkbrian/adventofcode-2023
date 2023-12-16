@@ -20,7 +20,7 @@ int main()
         {
                 cerr << "Error opening file: " << filename << endl;
                 return 1; // Return an error code
-        };
+        }
         int action_flag = -1;
         string line, string_short_name[] = {"seed", "soil", "fert", "wate", "ligh", "temp", "humi"};
         vector<long long> num_list, dest, src, size;
@@ -95,4 +95,5 @@ int main()
         }
         cout << endl << "Answer: " << min_value << endl;
         inputFile.close();
+        return 0;
 }

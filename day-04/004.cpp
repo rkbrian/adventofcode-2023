@@ -51,4 +51,5 @@ int main()
         }
         cout << "Answer: " << sum << endl;
         inputFile.close();
+        return 0;
 }
